@@ -15,10 +15,10 @@ const formatTagLabel = (value: string) =>
   value
     .replace(/[-_]/g, ' ')
     .replace(/\b\w/g, (letter) => letter.toUpperCase())
-const isWebm = (value?: string) => {
+const isVideoPreview = (value?: string) => {
   if (!value) return false
   const normalized = value.split('?')[0]?.toLowerCase()
-  return normalized?.endsWith('.webm') ?? false
+  return normalized?.endsWith('.webm') || normalized?.endsWith('.mp4')
 }
 
 const isAnimatedImage = (value?: string) => {
@@ -33,7 +33,7 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
   const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 })
   const navigate = useNavigate()
   const suppressCardClickRef = useRef(false)
-  const hasWebmPreview = isWebm(resource.previewImageUrl)
+  const hasVideoPreview = isVideoPreview(resource.previewImageUrl)
   const hasAnimatedImage = isAnimatedImage(resource.previewImageUrl)
 
   const portalTarget = useMemo(() => (typeof document !== 'undefined' ? document.body : null), [])
@@ -96,13 +96,13 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
           resource.previewImageUrl ? styles.resourceThumbHasImage : ''
         }`.trim()}
         style={
-          resource.previewImageUrl && !hasWebmPreview && !hasAnimatedImage
+          resource.previewImageUrl && !hasVideoPreview && !hasAnimatedImage
             ? { backgroundImage: `url(${resource.previewImageUrl})` }
             : { background: resource.accent }
         }
       >
         {!resource.previewImageUrl && <span>{resource.title.slice(0, 2).toUpperCase()}</span>}
-        {resource.previewImageUrl && hasWebmPreview && (
+        {resource.previewImageUrl && hasVideoPreview && (
           <video
             className={styles.previewThumbMedia}
             src={resource.previewImageUrl}
@@ -112,7 +112,7 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
             playsInline
           />
         )}
-        {resource.previewImageUrl && !hasWebmPreview && hasAnimatedImage && (
+        {resource.previewImageUrl && !hasVideoPreview && hasAnimatedImage && (
           <img
             className={styles.previewThumbMedia}
             src={resource.previewImageUrl}
@@ -252,7 +252,7 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
                 >
                   <i className="fa-solid fa-xmark" />
                 </button>
-                {hasWebmPreview ? (
+                {hasVideoPreview ? (
                   <video
                     className={styles.previewMedia}
                     src={resource.previewImageUrl}
@@ -275,7 +275,7 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
               className={styles.hoverPreview}
               style={{ top: `${hoverPosition.y}px`, left: `${hoverPosition.x}px` }}
             >
-              {hasWebmPreview ? (
+              {hasVideoPreview ? (
                 <video
                   className={styles.hoverPreviewMedia}
                   src={resource.previewImageUrl}

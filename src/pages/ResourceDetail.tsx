@@ -14,10 +14,10 @@ const formatTagLabel = (value: string) =>
     .replace(/[-_]/g, ' ')
     .replace(/\b\w/g, (letter) => letter.toUpperCase())
 const formatTypeLabel = (value: string) => formatTagLabel(value)
-const isWebm = (value?: string) => {
+const isVideoPreview = (value?: string) => {
   if (!value) return false
   const normalized = value.split('?')[0]?.toLowerCase()
-  return normalized?.endsWith('.webm') ?? false
+  return normalized?.endsWith('.webm') || normalized?.endsWith('.mp4')
 }
 
 const isAnimatedImage = (value?: string) => {
@@ -50,7 +50,7 @@ export const ResourceDetail = () => {
   const resource = resources.find((item) => item.id === id)
   const siteUrl = import.meta.env.VITE_SITE_URL || 'https://frvtubers.com'
   const portalTarget = useMemo(() => (typeof document !== 'undefined' ? document.body : null), [])
-  const hasWebmPreview = isWebm(resource?.previewImageUrl)
+  const hasVideoPreview = isVideoPreview(resource?.previewImageUrl)
   const hasAnimatedImage = isAnimatedImage(resource?.previewImageUrl)
   const discoveryGroups = (() => {
     const others = resources.filter((item) => item.id !== id)
@@ -183,15 +183,34 @@ export const ResourceDetail = () => {
             <aside className={styles.mediaPanel}>
               <div
                 className={`${styles.detailHero} ${
-                  resource.previewImageUrl ? styles.detailHeroHasImage : ''
+                  resource.previewImageUrl && !hasVideoPreview && !hasAnimatedImage
+                    ? styles.detailHeroHasImage
+                    : ''
                 }`.trim()}
                 style={
-                  resource.previewImageUrl
+                  resource.previewImageUrl && !hasVideoPreview && !hasAnimatedImage
                     ? { backgroundImage: `url(${resource.previewImageUrl})` }
                     : { background: resource.accent }
                 }
               >
                 {!resource.previewImageUrl && <span>{resource.title.slice(0, 2).toUpperCase()}</span>}
+                {resource.previewImageUrl && hasVideoPreview && (
+                  <video
+                    className={styles.detailHeroMedia}
+                    src={resource.previewImageUrl}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                  />
+                )}
+                {resource.previewImageUrl && !hasVideoPreview && hasAnimatedImage && (
+                  <img
+                    className={styles.detailHeroMedia}
+                    src={resource.previewImageUrl}
+                    alt={resource.title}
+                  />
+                )}
               </div>
               <div className={styles.mediaPanelBody}>
                 <div className={styles.mediaMeta}>
@@ -337,7 +356,7 @@ export const ResourceDetail = () => {
                 >
                   <i className="fa-solid fa-xmark" />
                 </button>
-                {hasWebmPreview ? (
+                {hasVideoPreview ? (
                   <video
                     className={styles.previewMedia}
                     src={resource.previewImageUrl}
