@@ -1,0 +1,220 @@
+.filterBar {
+  padding: var(--space-4);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  margin-bottom: var(--space-4);
+  overflow: hidden;
+}
+
+.filterBarRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.filterBarRow > * {
+  min-width: 0;
+}
+
+.filterBarRow:last-child {
+  margin-bottom: 0;
+}
+
+.rechercheInputField {
+  flex: 2 1 240px;
+}
+
+.languageInputField {
+  flex: 1 1 140px;
+}
+
+.sortInputField {
+  flex: 1 1 220px;
+  min-width: 190px;
+}
+
+.priceInputField {
+  flex: 1 1 140px;
+  min-width: 140px;
+}
+
+.toggleInputField {
+  margin-top: auto;
+  flex: 1 1 260px;
+}
+
+.toggleField {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) 0;
+}
+
+.toggleRow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+
+.toggleRow input {
+  position: absolute;
+  opacity: 0;
+  inset: 0 auto 0 0;
+  width: 54px;
+  height: 30px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.toggleTrack {
+  width: 54px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  transition: background 0.15s ease, border-color 0.15s ease;
+  position: relative;
+}
+
+.toggleTrack::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.toggleRow input:checked + .toggleTrack {
+  background: var(--accent-soft);
+  border-color: rgba(var(--accent-rgb), 0.32);
+}
+
+.toggleRow input:checked + .toggleTrack::after {
+  transform: translateX(24px);
+  background: var(--accent);
+}
+
+.toggleRow input:focus-visible + .toggleTrack {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.toggleText {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.tagFilter {
+  width: 100%;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.tagHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.tagLabel {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.tagControls {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.tagClear {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tagChip {
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--text-primary);
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tagChip:hover {
+  border-color: var(--accent);
+}
+
+.tagChipActive {
+  background: var(--accent-soft);
+  border-color: rgba(var(--accent-rgb), 0.32);
+  color: var(--accent-strong);
+}
+
+.tagCount {
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 520px) {
+  .filterBarRow {
+    gap: var(--space-3);
+  }
+
+  .rechercheInputField,
+  .languageInputField,
+  .sortInputField,
+  .priceInputField,
+  .toggleInputField {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+
+  .sortInputField,
+  .priceInputField {
+    min-width: 0;
+  }
+
+  .toggleField {
+    padding: 0;
+  }
+
+  .toggleRow {
+    width: 100%;
+  }
+}

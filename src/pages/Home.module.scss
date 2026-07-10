@@ -1,0 +1,250 @@
+.introGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.introMain {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.introLead {
+  max-width: 70ch;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  max-width: 640px;
+}
+
+.statItem {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.statValue {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.statLabel {
+  color: var(--text-secondary);
+}
+
+.introAside {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.infoBlock {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.infoBlock h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.infoList {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.infoList div {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.infoList dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.infoList dd {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.linkStack {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.utilityLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-subtle);
+  font-weight: 600;
+}
+
+.utilityLink:hover,
+.utilityLink:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.catalogSection {
+  padding-top: 0;
+}
+
+.catalogLayout {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.filterColumn {
+  position: sticky;
+  top: 88px;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.columnHeader {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.columnHeader h2,
+.columnHeader p {
+  margin: 0;
+}
+
+.columnHeader p:last-child {
+  color: var(--text-secondary);
+}
+
+.sideNote {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-subtle);
+}
+
+.sideNoteTitle {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.sideNote p:last-child {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.resultsColumn {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.resultsHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: end;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.resultsHeader h2,
+.resultsHeader p {
+  margin: 0;
+}
+
+.resultsHeader p:last-child {
+  color: var(--text-secondary);
+}
+
+.resultsMeta {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: end;
+  text-align: right;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.resultsMeta a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.activeFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.activeFilter {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 var(--space-2);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.resultsList {
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (max-width: 960px) {
+  .introGrid,
+  .catalogLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .filterColumn {
+    position: static;
+  }
+
+  .resultsHeader {
+    grid-template-columns: 1fr;
+  }
+
+  .resultsMeta {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 640px) {
+  .statGrid {
+    grid-template-columns: 1fr;
+  }
+}
