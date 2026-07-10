@@ -1,7 +1,7 @@
-import type { MouseEvent } from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import type { ResourceItem } from '../data/resources'
 import { trackResourceClick } from '../data/frvtubersApi'
 import styles from './ResourceCard.module.scss'
@@ -31,6 +31,8 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)
   const [isHoverPreviewOpen, setIsHoverPreviewOpen] = useState(false)
   const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 })
+  const navigate = useNavigate()
+  const suppressCardClickRef = useRef(false)
   const hasWebmPreview = isWebm(resource.previewImageUrl)
   const hasAnimatedImage = isAnimatedImage(resource.previewImageUrl)
 
@@ -58,8 +60,37 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
     setHoverPosition({ x: nextX, y: nextY })
   }
 
+  const handleOpenDetail = () => {
+    navigate(`/resource/${resource.id}`)
+  }
+
+  const closePreview = () => {
+    suppressCardClickRef.current = true
+    setIsPreviewOpen(false)
+    window.setTimeout(() => {
+      suppressCardClickRef.current = false
+    }, 0)
+  }
+
+  const handleCardKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      handleOpenDetail()
+    }
+  }
+
   return (
-    <article className={styles.resourceCard}>
+    <article
+      className={styles.resourceCard}
+      role="link"
+      tabIndex={0}
+      aria-label={`Voir le detail de ${resource.title}`}
+      onClick={() => {
+        if (suppressCardClickRef.current || isPreviewOpen) return
+        handleOpenDetail()
+      }}
+      onKeyDown={handleCardKeyDown}
+    >
       <div
         className={`${styles.resourceThumb} ${
           resource.previewImageUrl ? styles.resourceThumbHasImage : ''
@@ -93,7 +124,10 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
           <button
             type="button"
             className={styles.previewButton}
-            onClick={() => setIsPreviewOpen(true)}
+            onClick={(event) => {
+              event.stopPropagation()
+              setIsPreviewOpen(true)
+            }}
             onMouseEnter={(event) => {
               updateHoverPosition(event)
               setIsHoverPreviewOpen(true)
@@ -173,12 +207,21 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
               rel="noreferrer"
               aria-label="Ouvrir l'asset"
               title="Ouvrir l'asset"
-              onClick={() => trackResourceClick(resource.id)}
+              onClick={(event) => {
+                event.stopPropagation()
+                trackResourceClick(resource.id)
+              }}
             >
               <i className="fa-solid fa-arrow-up-right-from-square" />
               <span>Ouvrir le site</span>
             </a>
-            <Link className={styles.resourceLink} to={`/resource/${resource.id}`}>Voir en détail</Link>
+            <Link
+              className={styles.resourceLink}
+              to={`/resource/${resource.id}`}
+              onClick={(event) => event.stopPropagation()}
+            >
+              Voir en détail
+            </Link>
           </div>
         </div>
       </div>
@@ -189,7 +232,10 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
               role="dialog"
               aria-modal="true"
               aria-label={`Previsualisation de ${resource.title}`}
-              onClick={() => setIsPreviewOpen(false)}
+              onClick={(event) => {
+                event.preventDefault()
+                closePreview()
+              }}
             >
               <div
                 className={styles.previewDialog}
@@ -198,7 +244,10 @@ export const ResourceCard = ({ resource }: ResourceCardProps) => {
                 <button
                   type="button"
                   className={styles.previewClose}
-                  onClick={() => setIsPreviewOpen(false)}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    closePreview()
+                  }}
                   aria-label="Fermer la previsualisation"
                 >
                   <i className="fa-solid fa-xmark" />

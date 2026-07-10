@@ -5,6 +5,7 @@
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr;
+  cursor: pointer;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -25,7 +26,8 @@
 }
 
 .resourceThumbHasImage {
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
   color: transparent;
 }
